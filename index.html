@@ -1,0 +1,68 @@
+<script src="https://deno.land/x/habitat/build/habitat-embed.js"></script>
+<script>Habitat.install(this)</script>
+<script>
+
+const stage = Stage.make()
+
+const {canvas, context} = stage
+
+on.load(() => {
+	
+	document.body.style["margin"] = "0px"
+	document.body.appendChild(canvas)
+	trigger("resize")
+	setInterval(stage.tick, 1000 / 60)
+	
+})
+
+on.resize(() => {
+	
+	canvas.width = innerWidth
+	canvas.height = innerHeight
+	canvas.style["width"] = innerWidth
+	canvas.style["height"] = innerHeight
+	canvas.style["background-color"] = Colour.Black
+	
+})
+
+const makeStar = () => {
+	const direction = Math.random() * 2*Math.PI
+	return {x: canvas.width/2, y: canvas.height/2, direction, speed: 1, speedMod: 1.1}
+}
+
+
+const stars = new Set()
+const MAX_STARS = 10
+
+stage.tick = () => {
+	context.clearRect(0, 0, canvas.width, canvas.height)
+	
+	if (stars.size < MAX_STARS) {
+		const star = makeStar()
+		stars.add(star)
+	}
+	
+	context.strokeStyle = Colour.White
+	for (const star of stars.values()) {
+		
+		const nx = star.x + star.speed * Math.cos(star.direction)
+		const ny = star.y + star.speed * Math.sin(star.direction)
+		
+		context.beginPath()
+		context.moveTo(star.x, star.y)
+		context.lineTo(nx, ny)
+		context.stroke()
+		
+		star.x = nx
+		star.y = ny
+	}
+	
+	
+	
+	
+}
+
+
+
+
+</script>
