@@ -25,16 +25,28 @@ on.resize(() => {
 	
 })
 
+const COLOURS = [
+	Colour.Red,
+	Colour.Green,
+	Colour.Blue,
+	//Colour.Pink,
+	Colour.Yellow,
+	Colour.Cyan,
+	Colour.Orange,
+	Colour.Purple,
+]
+	
 const makeStar = () => {
+	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.02, age: 0}
+	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.02, age: 0}
 }
 
 
 const stars = new Set()
 const MAX_STARS = Infinity
 const SPEED = 5
-const TRAIL_LENGTH = 5
+const TRAIL_LENGTH = 100
 
 const spawnStars = () => {
 	if (Math.random() < 0.8 && stars.size < MAX_STARS) {
@@ -51,9 +63,10 @@ stage.tick = () => {
 	
 	spawnStars()
 	
-	context.strokeStyle = Colour.White
 	context.lineCap = "round"
 	for (const star of stars.values()) {
+		
+		context.strokeStyle = star.colour
 		
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
 		const ty = star.y + star.speed*TRAIL_LENGTH * Math.sin(star.direction)
