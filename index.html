@@ -39,7 +39,7 @@ const COLOURS = [
 const makeStar = () => {
 	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.98, age: 0}
+	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.95, age: 0}
 }
 
 
@@ -83,13 +83,13 @@ stage.tick = () => {
 		star.x = nx
 		star.y = ny
 		star.speed *= star.speedMod
-		star.age += 0.1
+		star.age += 0.6
 		
 		if (star.x < 0 || star.x > canvas.width || star.y < 0 || star.y > canvas.height) {
 			stars.delete(star)
 		}
 		
-		if (star.speed < 0.05) {
+		if (star.speed < 0.09) {
 			stars.delete(star)
 		}
 	}
