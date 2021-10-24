@@ -39,13 +39,13 @@ const COLOURS = [
 const makeStar = () => {
 	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.02, age: 0}
+	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.98, age: 0}
 }
 
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 5
+const SPEED = 10
 const TRAIL_LENGTH = 100
 
 const spawnStars = () => {
@@ -74,7 +74,7 @@ stage.tick = () => {
 		const nx = star.x + star.speed * Math.cos(star.direction)
 		const ny = star.y + star.speed * Math.sin(star.direction)
 		
-		context.lineWidth = star.age
+		context.lineWidth = star.age * 1.0
 		context.beginPath()
 		context.moveTo(star.x, star.y)
 		context.lineTo(tx, ty)
