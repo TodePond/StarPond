@@ -45,7 +45,7 @@ const makeStar = () => {
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 10
+const SPEED = 5
 const TRAIL_LENGTH = 100
 
 const spawnStars = () => {
@@ -86,6 +86,10 @@ stage.tick = () => {
 		star.age += 0.1
 		
 		if (star.x < 0 || star.x > canvas.width || star.y < 0 || star.y > canvas.height) {
+			stars.delete(star)
+		}
+		
+		if (star.speed < 0.05) {
 			stars.delete(star)
 		}
 	}
