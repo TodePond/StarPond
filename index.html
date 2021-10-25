@@ -25,19 +25,31 @@ on.resize(() => {
 	
 })
 
+const COLOURS = [
+	Colour.Red,
+	Colour.Green,
+	Colour.Blue,
+	//Colour.Pink,
+	Colour.Yellow,
+	Colour.Cyan,
+	Colour.Orange,
+	Colour.Purple,
+]
+	
 const makeStar = () => {
+	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.02, age: 0}
+	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.98, age: 0}
 }
 
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 5
-const TRAIL_LENGTH = 5
+const SPEED = 0.1
+const TRAIL_LENGTH = 100
 
 const spawnStars = () => {
-	if (Math.random() < 0.8 && stars.size < MAX_STARS) {
+	if (Math.random() < 0.6 && stars.size < MAX_STARS) {
 		const star = makeStar()
 		stars.add(star)
 		spawnStars()
@@ -46,14 +58,19 @@ const spawnStars = () => {
 
 const MARGIN_TEST = 10
 
+let p = true
+on.keydown(e => p = false)
+
 stage.tick = () => {
+	if (p) return
 	context.clearRect(0, 0, canvas.width, canvas.height)
 	
 	spawnStars()
 	
-	context.strokeStyle = Colour.White
 	context.lineCap = "round"
 	for (const star of stars.values()) {
+		
+		context.strokeStyle = star.colour
 		
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
 		const ty = star.y + star.speed*TRAIL_LENGTH * Math.sin(star.direction)
@@ -61,7 +78,7 @@ stage.tick = () => {
 		const nx = star.x + star.speed * Math.cos(star.direction)
 		const ny = star.y + star.speed * Math.sin(star.direction)
 		
-		context.lineWidth = star.age
+		context.lineWidth = star.age * 1.0
 		context.beginPath()
 		context.moveTo(star.x, star.y)
 		context.lineTo(tx, ty)
@@ -70,10 +87,14 @@ stage.tick = () => {
 		star.x = nx
 		star.y = ny
 		star.speed *= star.speedMod
-		star.age += 0.1
+		star.age += 4
 		
 		if (star.x < 0 || star.x > canvas.width || star.y < 0 || star.y > canvas.height) {
 			stars.delete(star)
+		}
+		
+		if (star.speed < 0.09) {
+			//stars.delete(star)
 		}
 	}
 	
