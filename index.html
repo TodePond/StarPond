@@ -39,13 +39,13 @@ const COLOURS = [
 const makeStar = () => {
 	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.95, age: 0}
+	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.98, age: 0}
 }
 
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 5
+const SPEED = 0.1
 const TRAIL_LENGTH = 100
 
 const spawnStars = () => {
@@ -87,14 +87,14 @@ stage.tick = () => {
 		star.x = nx
 		star.y = ny
 		star.speed *= star.speedMod
-		star.age += 0.6
+		star.age += 4
 		
 		if (star.x < 0 || star.x > canvas.width || star.y < 0 || star.y > canvas.height) {
 			stars.delete(star)
 		}
 		
 		if (star.speed < 0.09) {
-			stars.delete(star)
+			//stars.delete(star)
 		}
 	}
 	
