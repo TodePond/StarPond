@@ -63,7 +63,7 @@ const TRAIL_LENGTH = 10
 const spawnStars = () => {
 
 
-	if (Math.random() < 0.1 && stars.size < MAX_STARS) {
+	if (Math.random() < 0.05 && stars.size < MAX_STARS) {
 		const star = makeStar()
 		stars.add(star)
 		spawnStars()
