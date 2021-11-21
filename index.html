@@ -6,6 +6,17 @@ const stage = Stage.make()
 
 const {canvas, context} = stage
 
+const TIMELINE_LENGTH = 30
+const timeline = []
+for (let i = 0; i < TIMELINE_LENGTH; i++) {
+	timeline.push({number: i+1})
+}
+for (const time of timeline) {
+	const img = document.createElement("img")
+	img.src = `images/${time.number}.jpg`
+	time.img = img
+}
+
 on.load(() => {
 	
 	document.body.style["margin"] = "0px"
@@ -29,27 +40,30 @@ const COLOURS = [
 	Colour.Red,
 	Colour.Green,
 	Colour.Blue,
-	//Colour.Pink,
+	Colour.Rose,
+	Colour.Pink,
 	Colour.Yellow,
 	Colour.Cyan,
 	Colour.Orange,
 	Colour.Purple,
 ]
 	
+let starId = 0
 const makeStar = () => {
 	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.02, age: 0}
+	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.02, age: 0, id: starId++}
 }
-
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 5
-const TRAIL_LENGTH = 100
+const SPEED = 0.2
+const TRAIL_LENGTH = 10
 
 const spawnStars = () => {
-	if (Math.random() < 0.8 && stars.size < MAX_STARS) {
+
+
+	if (Math.random() < 0.1 && stars.size < MAX_STARS) {
 		const star = makeStar()
 		stars.add(star)
 		spawnStars()
@@ -58,43 +72,62 @@ const spawnStars = () => {
 
 const MARGIN_TEST = 10
 
+const KILL_ZONE = 2000
+const THUMB_SIZE = 0.005
+
+let GROWTH = 0.3
+
+let paused = true
+
+on.keydown(e => {
+	if (e.key === " ") paused = !paused
+}) 
+
 stage.tick = () => {
+
+	if (paused) return
+
 	context.clearRect(0, 0, canvas.width, canvas.height)
-	
-	spawnStars()
-	
+	GROWTH += 0.001
+	if (starId < 30) spawnStars()
+
 	context.lineCap = "round"
-	for (const star of stars.values()) {
+	for (const star of [...stars.values()].reverse()) {
 		
-		context.strokeStyle = star.colour
+		/*context.strokeStyle = star.colour
 		
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
 		const ty = star.y + star.speed*TRAIL_LENGTH * Math.sin(star.direction)
 			  
-		const nx = star.x + star.speed * Math.cos(star.direction)
-		const ny = star.y + star.speed * Math.sin(star.direction)
 		
 		context.lineWidth = star.age
 		context.beginPath()
 		context.moveTo(star.x, star.y)
 		context.lineTo(tx, ty)
-		context.stroke()
+		context.stroke()*/
 		
+		const nx = star.x + star.speed * Math.cos(star.direction)
+		const ny = star.y + star.speed * Math.sin(star.direction)
+		
+		const ep = (star.id % 30)
+
+		const img = timeline[ep].img
+		const width = img.width * star.age * THUMB_SIZE
+		const height = img.height * star.age * THUMB_SIZE
+		context.drawImage(img, nx-width/2, ny-height/2, width, height)
+
 		star.x = nx
 		star.y = ny
 		star.speed *= star.speedMod
-		star.age += 0.1
+		star.age += GROWTH
 		
-		if (star.x < 0 || star.x > canvas.width || star.y < 0 || star.y > canvas.height) {
+		if (star.x < -KILL_ZONE || star.x > canvas.width+KILL_ZONE || star.y < -KILL_ZONE || star.y > canvas.height+KILL_ZONE) {
 			stars.delete(star)
 		}
 	}
 	
 	//context.fillStyle = Colour.Grey
 	//context.fillRect(canvas.width/MARGIN_TEST, canvas.height/MARGIN_TEST, canvas.width-canvas.width/MARGIN_TEST*2, canvas.height-canvas.height/MARGIN_TEST*2)
-	
-	
-	
 	
 }
 
