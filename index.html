@@ -63,7 +63,7 @@ const TRAIL_LENGTH = 10
 const spawnStars = () => {
 
 
-	if (Math.random() < 0.05 && stars.size < MAX_STARS) {
+	if (Math.random() < 0.8 && stars.size < MAX_STARS) {
 		const star = makeStar()
 		stars.add(star)
 		spawnStars()
@@ -73,9 +73,9 @@ const spawnStars = () => {
 const MARGIN_TEST = 10
 
 const KILL_ZONE = 2000
-const THUMB_SIZE = 0.005
+const THUMB_SIZE = 0.001
 
-let GROWTH = 0.3
+let GROWTH = 0.02
 
 let paused = true
 
@@ -88,8 +88,9 @@ stage.tick = () => {
 	if (paused) return
 
 	context.clearRect(0, 0, canvas.width, canvas.height)
-	GROWTH += 0.001
-	if (starId < 30) spawnStars()
+	//GROWTH += 0.001
+	//if (starId < 30) spawnStars()
+	spawnStars()
 
 	context.lineCap = "round"
 	for (const star of [...stars.values()].reverse()) {
