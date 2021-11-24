@@ -63,7 +63,7 @@ const TRAIL_LENGTH = 10
 const spawnStars = () => {
 
 
-	if (Math.random() < 0.8 && stars.size < MAX_STARS) {
+	if (Math.random() < 0.85 && stars.size < MAX_STARS) {
 		const star = makeStar()
 		stars.add(star)
 		spawnStars()
@@ -73,9 +73,9 @@ const spawnStars = () => {
 const MARGIN_TEST = 10
 
 const KILL_ZONE = 2000
-const THUMB_SIZE = 0.001
+const THUMB_SIZE = 0.0015
 
-let GROWTH = 0.02
+let GROWTH = 0.05
 
 let paused = true
 
