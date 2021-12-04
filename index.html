@@ -52,18 +52,18 @@ let starId = 0
 const makeStar = () => {
 	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.02, age: 0, id: starId++}
+	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.99, age: 0, id: starId++}
 }
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 0.2
+const SPEED = 5.0
 const TRAIL_LENGTH = 10
 
 const spawnStars = () => {
 
 
-	if (Math.random() < 0.85 && stars.size < MAX_STARS) {
+	if (Math.random() < 0.9 && stars.size < MAX_STARS) {
 		const star = makeStar()
 		stars.add(star)
 		spawnStars()
@@ -73,9 +73,9 @@ const spawnStars = () => {
 const MARGIN_TEST = 10
 
 const KILL_ZONE = 2000
-const THUMB_SIZE = 0.0015
+const THUMB_SIZE = 0.001
 
-let GROWTH = 0.05
+let GROWTH = 0.2
 
 let paused = true
 
@@ -124,6 +124,10 @@ stage.tick = () => {
 		
 		if (star.x < -KILL_ZONE || star.x > canvas.width+KILL_ZONE || star.y < -KILL_ZONE || star.y > canvas.height+KILL_ZONE) {
 			stars.delete(star)
+		}
+
+		if (star.speed < 0.95) {
+			star.speedMod = 1.02
 		}
 	}
 	
