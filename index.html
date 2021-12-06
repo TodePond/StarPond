@@ -57,13 +57,13 @@ const makeStar = () => {
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 5.0
+const SPEED = 4.0
 const TRAIL_LENGTH = 10
 
+let r = 0.1
 const spawnStars = () => {
 
-
-	if (Math.random() < 0.9 && stars.size < MAX_STARS) {
+	if (Math.random() < r && stars.size < MAX_STARS) {
 		const star = makeStar()
 		stars.add(star)
 		spawnStars()
@@ -72,10 +72,10 @@ const spawnStars = () => {
 
 const MARGIN_TEST = 10
 
-const KILL_ZONE = 2000
-const THUMB_SIZE = 0.001
+const KILL_ZONE = 100
+const THUMB_SIZE = 0.002
 
-let GROWTH = 0.2
+let GROWTH = 0.02
 
 let paused = true
 
@@ -88,6 +88,9 @@ stage.tick = () => {
 	if (paused) return
 
 	context.clearRect(0, 0, canvas.width, canvas.height)
+	r += (1-r) * 0.001
+	//r += 0.0005
+	//if (r > 0.9) r = 0.0
 	//GROWTH += 0.001
 	//if (starId < 30) spawnStars()
 	spawnStars()
@@ -95,17 +98,18 @@ stage.tick = () => {
 	context.lineCap = "round"
 	for (const star of [...stars.values()].reverse()) {
 		
-		/*context.strokeStyle = star.colour
+		context.strokeStyle = star.colour
 		
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
 		const ty = star.y + star.speed*TRAIL_LENGTH * Math.sin(star.direction)
 			  
-		
-		context.lineWidth = star.age
-		context.beginPath()
-		context.moveTo(star.x, star.y)
-		context.lineTo(tx, ty)
-		context.stroke()*/
+		if (star.age !== 0) {
+			context.lineWidth = star.age
+			context.beginPath()
+			context.moveTo(star.x, star.y)
+			context.lineTo(tx, ty)
+			context.stroke()
+		}
 		
 		const nx = star.x + star.speed * Math.cos(star.direction)
 		const ny = star.y + star.speed * Math.sin(star.direction)
@@ -115,7 +119,7 @@ stage.tick = () => {
 		const img = timeline[ep].img
 		const width = img.width * star.age * THUMB_SIZE
 		const height = img.height * star.age * THUMB_SIZE
-		context.drawImage(img, nx-width/2, ny-height/2, width, height)
+		//context.drawImage(img, nx-width/2, ny-height/2, width, height)
 
 		star.x = nx
 		star.y = ny
@@ -126,8 +130,12 @@ stage.tick = () => {
 			stars.delete(star)
 		}
 
-		if (star.speed < 0.95) {
+		if (star.speed < 0.15) {
 			star.speedMod = 1.02
+		}
+
+		if (star.speed > SPEED * 2) {
+			//star.speedMod = 0.99
 		}
 	}
 	
