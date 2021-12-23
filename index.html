@@ -60,7 +60,7 @@ const makeStar = () => {
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 0.8
+const SPEED = 0.7
 const TRAIL_LENGTH = 10
 
 let r = 0.4
@@ -78,7 +78,7 @@ const MARGIN_TEST = 10
 const KILL_ZONE = 100
 const THUMB_SIZE = 0.01
 
-let GROWTH = 0.06
+let GROWTH = 0.07
 
 let paused = true
 
@@ -103,6 +103,8 @@ stage.tick = () => {
 		
 		//context.strokeStyle = star.colour
 		
+		star.direction += 0.001 * star.age
+
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
 		const ty = star.y + star.speed*TRAIL_LENGTH * Math.sin(star.direction)
 			  
