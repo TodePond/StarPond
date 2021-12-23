@@ -55,12 +55,12 @@ let starId = 0
 const makeStar = () => {
 	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.99, age: 0, id: starId++}
+	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.01, age: 0, id: starId++}
 }
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 3.0
+const SPEED = 0.2
 const TRAIL_LENGTH = 10
 
 let r = 0.5
@@ -76,7 +76,7 @@ const spawnStars = () => {
 const MARGIN_TEST = 10
 
 const KILL_ZONE = 100
-const THUMB_SIZE = 0.01
+const THUMB_SIZE = 0.005
 
 let GROWTH = 0.07
 
