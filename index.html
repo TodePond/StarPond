@@ -55,15 +55,15 @@ let starId = 0
 const makeStar = () => {
 	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.008, age: 0, id: starId++}
+	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.99, age: 0, id: starId++}
 }
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 0.2
+const SPEED = 4.5
 const TRAIL_LENGTH = 10
 
-let r = 0.5
+let r = 0.75
 const spawnStars = () => {
 
 	if (Math.random() < r && stars.size < MAX_STARS) {
@@ -77,7 +77,10 @@ const MARGIN_TEST = 10
 
 const KILL_ZONE = 100
 const THUMB_SIZE = 0.003
+const LINE_THICKNESS = 0.2
 
+// affects star.age
+// which may affect various different things
 let GROWTH = 0.07
 
 let paused = true
@@ -101,20 +104,20 @@ stage.tick = () => {
 	context.lineCap = "round"
 	for (const star of [...stars.values()].reverse()) {
 		
-		//context.strokeStyle = star.colour
+		context.strokeStyle = Colour.White
 		
-		star.direction += 0.001 * star.age
+		star.direction -= 0.0002 * star.age
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
 		const ty = star.y + star.speed*TRAIL_LENGTH * Math.sin(star.direction)
 			  
-		/*if (star.age !== 0) {
-			context.lineWidth = star.age
+		if (star.age !== 0) {
+			context.lineWidth = star.age * LINE_THICKNESS
 			context.beginPath()
 			context.moveTo(star.x, star.y)
 			context.lineTo(tx, ty)
 			context.stroke()
-		}*/
+		}
 		
 		const nx = star.x + star.speed * Math.cos(star.direction)
 		const ny = star.y + star.speed * Math.sin(star.direction)
@@ -134,7 +137,7 @@ stage.tick = () => {
 		context.rotate(rotation)
 		context.translate(-nx, -ny)
 
-		context.drawImage(img, x, y, width, height)
+		//context.drawImage(img, x, y, width, height)
 
 		context.translate(nx, ny)
 		context.rotate(-rotation)
@@ -149,7 +152,7 @@ stage.tick = () => {
 			stars.delete(star)
 		}
 
-		if (star.speed < 0.15) {
+		if (star.speed < 0.8) {
 			star.speedMod = 1.05
 		}
 
