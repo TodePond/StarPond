@@ -55,15 +55,15 @@ let starId = 0
 const makeStar = () => {
 	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.02, age: 0, id: starId++}
+	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.01, age: 0, id: starId++}
 }
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 0.03
+const SPEED = 0.2
 const TRAIL_LENGTH = 10
 
-let r = 0.4
+let r = 0.5
 const spawnStars = () => {
 
 	if (Math.random() < r && stars.size < MAX_STARS) {
@@ -76,12 +76,9 @@ const spawnStars = () => {
 const MARGIN_TEST = 10
 
 const KILL_ZONE = 100
-const THUMB_SIZE = 0.002
-const LINE_THICKNESS = 0.2
+const THUMB_SIZE = 0.005
 
-// affects star.age
-// which may affect various different things
-let GROWTH = 0.5
+let GROWTH = 0.07
 
 let paused = true
 
@@ -104,15 +101,15 @@ stage.tick = () => {
 	context.lineCap = "round"
 	for (const star of [...stars.values()].reverse()) {
 		
-		context.strokeStyle = Colour.White
+		//context.strokeStyle = star.colour
 		
-		//star.direction += 0.0002 * star.age
+		star.direction += 0.001 * star.age
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
 		const ty = star.y + star.speed*TRAIL_LENGTH * Math.sin(star.direction)
 			  
 		/*if (star.age !== 0) {
-			context.lineWidth = star.age * LINE_THICKNESS
+			context.lineWidth = star.age
 			context.beginPath()
 			context.moveTo(star.x, star.y)
 			context.lineTo(tx, ty)
@@ -152,8 +149,8 @@ stage.tick = () => {
 			stars.delete(star)
 		}
 
-		if (star.speed < 0.8) {
-			//star.speedMod = 1.05
+		if (star.speed < 0.15) {
+			star.speedMod = 1.05
 		}
 
 		if (star.speed > SPEED * 2) {
