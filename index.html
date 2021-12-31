@@ -59,11 +59,11 @@ const makeStar = () => {
 }
 
 const stars = new Set()
-const MAX_STARS = Infinity
+const MAX_STARS = 20
 const SPEED = 0.2
 const TRAIL_LENGTH = 10
 
-let r = 0.5
+let r = 0.4
 const spawnStars = () => {
 
 	if (Math.random() < r && stars.size < MAX_STARS) {
