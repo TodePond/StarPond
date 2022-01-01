@@ -76,7 +76,7 @@ const spawnStars = () => {
 const MARGIN_TEST = 10
 
 const KILL_ZONE = 100
-const THUMB_SIZE = 0.005
+const THUMB_SIZE = 0.004
 
 let GROWTH = 0.07
 
@@ -103,7 +103,7 @@ stage.tick = () => {
 		
 		//context.strokeStyle = star.colour
 		
-		star.direction += 0.00005 * star.age
+		star.direction += 0.0003 * star.age
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
 		const ty = star.y + star.speed*TRAIL_LENGTH * Math.sin(star.direction)
