@@ -55,11 +55,11 @@ let starId = 0
 const makeStar = () => {
 	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.01, age: 0, id: starId++}
+	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.005, age: 0, id: starId++}
 }
 
 const stars = new Set()
-const MAX_STARS = 20
+const MAX_STARS = Infinity
 const SPEED = 0.2
 const TRAIL_LENGTH = 10
 
@@ -103,7 +103,7 @@ stage.tick = () => {
 		
 		//context.strokeStyle = star.colour
 		
-		star.direction += 0.001 * star.age
+		star.direction += 0.00005 * star.age
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
 		const ty = star.y + star.speed*TRAIL_LENGTH * Math.sin(star.direction)
