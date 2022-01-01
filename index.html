@@ -55,15 +55,15 @@ let starId = 0
 const makeStar = () => {
 	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.005, age: 0, id: starId++}
+	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.99, age: 0, id: starId++, ageSize: 0}
 }
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 0.2
+const SPEED = 3.0
 const TRAIL_LENGTH = 10
 
-let r = 0.4
+let r = 0.8
 const spawnStars = () => {
 
 	if (Math.random() < r && stars.size < MAX_STARS) {
@@ -76,9 +76,10 @@ const spawnStars = () => {
 const MARGIN_TEST = 10
 
 const KILL_ZONE = 100
-const THUMB_SIZE = 0.004
+const THUMB_SIZE = 0.003
 
-let GROWTH = 0.07
+let GROWTH = 0.2
+let GROWTH_SIZE = 0.2
 
 let paused = true
 
@@ -103,7 +104,7 @@ stage.tick = () => {
 		
 		//context.strokeStyle = star.colour
 		
-		star.direction += 0.0003 * star.age
+		star.direction += 0.00005 * star.age
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
 		const ty = star.y + star.speed*TRAIL_LENGTH * Math.sin(star.direction)
@@ -122,8 +123,8 @@ stage.tick = () => {
 		const ep = (star.id % 30)
 
 		const img = plane
-		const width = img.width * star.age * THUMB_SIZE
-		const height = img.height * star.age * THUMB_SIZE
+		const width = img.width * star.ageSize * THUMB_SIZE
+		const height = img.height * star.ageSize * THUMB_SIZE
 
 		const x = nx-width/2
 		const y = ny-height/2
@@ -144,18 +145,19 @@ stage.tick = () => {
 		star.y = ny
 		star.speed *= star.speedMod
 		star.age += GROWTH
+		star.ageSize += GROWTH_SIZE
 		
 		if (star.x < -KILL_ZONE || star.x > canvas.width+KILL_ZONE || star.y < -KILL_ZONE || star.y > canvas.height+KILL_ZONE) {
 			stars.delete(star)
 		}
 
-		if (star.speed < 0.15) {
-			star.speedMod = 1.05
+		if (star.speed < 0.5) {
+			star.speedMod = 1.02
 		}
 
-		if (star.speed > SPEED * 2) {
-			//star.speedMod = 0.99
-		}
+		/*if (star.speed > 1.5) {
+			star.speedMod = 0.995
+		}*/
 	}
 	
 	//context.fillStyle = Colour.Grey
