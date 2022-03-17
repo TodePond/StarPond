@@ -18,7 +18,7 @@ for (const time of timeline) {
 }
 
 const plane = document.createElement("img")
-plane.src = `images/plane.png`
+plane.src = `images/todetode/bot.png`
 
 on.load(() => {
 	
@@ -60,10 +60,10 @@ const makeStar = () => {
 
 const stars = new Set()
 const MAX_STARS = Infinity
-const SPEED = 3.0
+const SPEED = 5.0
 const TRAIL_LENGTH = 10
 
-let r = 0.8
+let r = 0.2
 const spawnStars = () => {
 
 	if (Math.random() < r && stars.size < MAX_STARS) {
@@ -76,10 +76,10 @@ const spawnStars = () => {
 const MARGIN_TEST = 10
 
 const KILL_ZONE = 100
-const THUMB_SIZE = 0.003
+const THUMB_SIZE = 0.004
 
 let GROWTH = 0.2
-let GROWTH_SIZE = 0.2
+let GROWTH_SIZE = 0.1
 
 let paused = true
 
@@ -104,7 +104,8 @@ stage.tick = () => {
 		
 		//context.strokeStyle = star.colour
 		
-		star.direction += 0.00005 * star.age
+		star.direction += 0.00010 * star.age
+		//star.direction += 0.001
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
 		const ty = star.y + star.speed*TRAIL_LENGTH * Math.sin(star.direction)
@@ -152,7 +153,7 @@ stage.tick = () => {
 		}
 
 		if (star.speed < 0.5) {
-			star.speedMod = 1.02
+			star.speedMod = 1.05
 		}
 
 		/*if (star.speed > 1.5) {
