@@ -6,7 +6,7 @@ const stage = Stage.make()
 
 const {canvas, context} = stage
 
-const TIMELINE_LENGTH = 30
+/*const TIMELINE_LENGTH = 30
 const timeline = []
 for (let i = 0; i < TIMELINE_LENGTH; i++) {
 	timeline.push({number: i+1})
@@ -18,14 +18,28 @@ for (const time of timeline) {
 }
 
 const plane = document.createElement("img")
-plane.src = `images/todetode/bot.png`
+plane.src = `images/todetode/bot.png`*/
+
+const srcs = [
+	//`images/todetode/botdobadtode.png`,
+	`images/todetode/bot.png`,
+	//`images/todetode/tode.png`,
+	//`images/todetode/dobad.png`,
+]
+
+const imgs = []
+for (const src of srcs) {
+	const img = document.createElement("img")
+	img.src = src
+	imgs.push(img)
+}
 
 on.load(() => {
 	
 	document.body.style["margin"] = "0px"
 	document.body.appendChild(canvas)
 	trigger("resize")
-	setInterval(stage.tick, 1000 / 60)
+	requestAnimationFrame(stage.tick)
 	
 })
 
@@ -53,17 +67,18 @@ const COLOURS = [
 	
 let starId = 0
 const makeStar = () => {
-	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
+	//const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	const direction = Math.random() * 2*Math.PI
-	return {colour, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.99, age: 0, id: starId++, ageSize: 0}
+	const img = imgs[Random.Uint32 % imgs.length]
+	return {img, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.001, age: 0, id: starId++, ageSize: 0}
 }
 
 const stars = new Set()
-const MAX_STARS = Infinity
-const SPEED = 5.0
+const MAX_STARS = 1000
+const SPEED = 3.0
 const TRAIL_LENGTH = 10
 
-let r = 0.2
+let r = 0.01
 const spawnStars = () => {
 
 	if (Math.random() < r && stars.size < MAX_STARS) {
@@ -78,7 +93,7 @@ const MARGIN_TEST = 10
 const KILL_ZONE = 100
 const THUMB_SIZE = 0.004
 
-let GROWTH = 0.2
+let GROWTH = 0.1
 let GROWTH_SIZE = 0.1
 
 let paused = true
@@ -89,10 +104,14 @@ on.keydown(e => {
 
 stage.tick = () => {
 
-	if (paused) return
+	if (paused) {
+		requestAnimationFrame(stage.tick)
+		return
+	}
+
 
 	context.clearRect(0, 0, canvas.width, canvas.height)
-	//r += (1-r) * 0.001
+	r += (1-r) * 0.005
 	//r += 0.0005
 	//if (r > 0.9) r = 0.0
 	//GROWTH += 0.001
@@ -104,7 +123,7 @@ stage.tick = () => {
 		
 		//context.strokeStyle = star.colour
 		
-		star.direction += 0.00010 * star.age
+		star.direction += 0.000510 * star.age
 		//star.direction += 0.001
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
@@ -123,7 +142,7 @@ stage.tick = () => {
 		
 		const ep = (star.id % 30)
 
-		const img = plane
+		const img = star.img
 		const width = img.width * star.ageSize * THUMB_SIZE
 		const height = img.height * star.ageSize * THUMB_SIZE
 
@@ -164,6 +183,7 @@ stage.tick = () => {
 	//context.fillStyle = Colour.Grey
 	//context.fillRect(canvas.width/MARGIN_TEST, canvas.height/MARGIN_TEST, canvas.width-canvas.width/MARGIN_TEST*2, canvas.height-canvas.height/MARGIN_TEST*2)
 	
+	requestAnimationFrame(stage.tick)
 }
 
 
