@@ -21,8 +21,8 @@ const plane = document.createElement("img")
 plane.src = `images/todetode/bot.png`*/
 
 const srcs = [
-	`images/todetode/botdobadtode.png`,
-	//`images/todetode/bot.png`,
+	//`images/todetode/botdobadtode.png`,
+	`images/todetode/bot.png`,
 	//`images/todetode/tode.png`,
 	//`images/todetode/dobad.png`,
 ]
@@ -73,12 +73,12 @@ const makeStar = () => {
 	const direction = dt
 	dt += 0.2
 	const img = imgs[Random.Uint32 % imgs.length]
-	return {img, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.99, age: 0, id: starId++, ageSize: 0}
+	return {img, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 1.01, age: 0, id: starId++, ageSize: 0}
 }
 
 const stars = new Set()
 const MAX_STARS = 1000
-const SPEED = 3.0
+const SPEED = 0.1
 const TRAIL_LENGTH = 10
 
 let r = 0.01
@@ -127,7 +127,7 @@ stage.tick = () => {
 		
 		//context.strokeStyle = star.colour
 		
-		star.direction += 0.000110 * star.age
+		star.direction += 0.08
 		//star.direction += 0.001
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
