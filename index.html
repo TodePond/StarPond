@@ -21,10 +21,12 @@ const plane = document.createElement("img")
 plane.src = `images/todetode/bot.png`*/
 
 const srcs = [
-	`images/todetode/botdobadtode.png`,
+	//`images/todetode/botdobadtode.png`,
 	//`images/todetode/bot.png`,
 	//`images/todetode/tode.png`,
 	//`images/todetode/dobad.png`,
+	//`images/todetode/woodwood.png`,
+	`images/todetode/wood.png`,
 ]
 
 const imgs = []
@@ -95,6 +97,7 @@ const MARGIN_TEST = 10
 
 const KILL_ZONE = 100
 const THUMB_SIZE = 0.004
+let ROTATION_OFFSET = Math.PI/2
 
 let GROWTH = 0.1
 let GROWTH_SIZE = 0.1
@@ -156,13 +159,13 @@ stage.tick = () => {
 		const rotation = star.direction
 
 		context.translate(nx, ny)
-		context.rotate(rotation)
+		context.rotate(rotation + ROTATION_OFFSET)
 		context.translate(-nx, -ny)
 
 		context.drawImage(img, x, y, width, height)
 
 		context.translate(nx, ny)
-		context.rotate(-rotation)
+		context.rotate(-rotation - ROTATION_OFFSET)
 		context.translate(-nx, -ny)
 
 		star.x = nx
