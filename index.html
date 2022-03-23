@@ -27,6 +27,8 @@ const srcs = [
 	//`images/todetode/dobad.png`,
 	//`images/todetode/woodwood.png`,
 	`images/todetode/wood.png`,
+	//`images/todetode/airsentence.png`,
+	`images/todetode/air.png`,
 ]
 
 const imgs = []
@@ -69,12 +71,18 @@ const COLOURS = [
 	
 let starId = 0
 let dt = 0
+let imgi = 0
 const makeStar = () => {
 	//const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	//const direction = Math.random() * 2*Math.PI
 	const direction = dt
 	dt += 0.2
-	const img = imgs[Random.Uint32 % imgs.length]
+	//const img = imgs[Random.Uint32 % imgs.length]
+	const img = imgs[imgi]
+	imgi++
+	if (imgi >= imgs.length) {
+		imgi = 0
+	}
 	return {img, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.99, age: 0, id: starId++, ageSize: 0}
 }
 
