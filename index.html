@@ -125,6 +125,8 @@ stage.tick = () => {
 	//if (starId < 30) spawnStars()
 	spawnStars()
 
+	ROTATION_OFFSET += 0.01
+
 	context.lineCap = "round"
 	for (const star of [...stars.values()].reverse()) {
 		
