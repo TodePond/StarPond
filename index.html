@@ -87,7 +87,7 @@ const makeStar = () => {
 }
 
 const stars = new Set()
-const MAX_STARS = 1000
+const MAX_STARS = 100
 const SPEED = 3.0
 const TRAIL_LENGTH = 10
 
@@ -125,8 +125,8 @@ stage.tick = () => {
 
 
 	context.clearRect(0, 0, canvas.width, canvas.height)
-	r += (1-r) * 0.003
-	if (r > 0.6) r = 0.01
+	r += (1-r) * 0.001
+	if (r > 0.4) r = 0.01
 	//r += 0.0005
 	//if (r > 0.9) r = 0.0
 	//GROWTH += 0.001
@@ -136,6 +136,7 @@ stage.tick = () => {
 	ROTATION_OFFSET += 0.01
 
 	context.lineCap = "round"
+	
 	for (const star of [...stars.values()].reverse()) {
 		
 		//context.strokeStyle = star.colour
@@ -168,6 +169,11 @@ stage.tick = () => {
 
 		const rotation = star.direction
 
+		const distanceVector = [x + canvas.width/2, y + canvas.height/2]
+		const distanceMagnitude = Math.hypot(...distanceVector)
+		const blur = distanceMagnitude * 0.00002 * width
+		context.filter = `blur(${blur}px)`
+
 		context.translate(nx, ny)
 		context.rotate(rotation + ROTATION_OFFSET)
 		context.translate(-nx, -ny)
@@ -180,6 +186,7 @@ stage.tick = () => {
 
 		star.x = nx
 		star.y = ny
+
 		star.speed *= star.speedMod
 		star.age += GROWTH
 		star.ageSize += GROWTH_SIZE
