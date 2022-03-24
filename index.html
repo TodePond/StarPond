@@ -29,6 +29,7 @@ const srcs = [
 	`images/todetode/wood.png`,
 	//`images/todetode/airsentence.png`,
 	`images/todetode/air.png`,
+	`images/todetode/rock.png`,
 ]
 
 const imgs = []
@@ -76,7 +77,7 @@ const makeStar = () => {
 	//const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	//const direction = Math.random() * 2*Math.PI
 	const direction = dt
-	dt += 0.2
+	dt += 0.1
 	//const img = imgs[Random.Uint32 % imgs.length]
 	const img = imgs[imgi]
 	imgi++
@@ -87,11 +88,12 @@ const makeStar = () => {
 }
 
 const stars = new Set()
-const MAX_STARS = 100
-const SPEED = 3.0
+const MAX_STARS = 5000
+const SPEED = 1.0
 const TRAIL_LENGTH = 10
 
 let r = 0.01
+let dr = 1
 const spawnStars = () => {
 
 	if (Math.random() < r && stars.size < MAX_STARS) {
@@ -125,15 +127,16 @@ stage.tick = () => {
 
 
 	context.clearRect(0, 0, canvas.width, canvas.height)
-	r += (1-r) * 0.001
-	if (r > 0.4) r = 0.01
+	r += (1-r) * 0.002 * dr
+	if (r > 0.6) dr = -1
+	if (r < 0.02) dr = 1
 	//r += 0.0005
 	//if (r > 0.9) r = 0.0
 	//GROWTH += 0.001
 	//if (starId < 30) spawnStars()
 	spawnStars()
 
-	ROTATION_OFFSET += 0.01
+	//ROTATION_OFFSET += 0.005
 
 	context.lineCap = "round"
 	
@@ -141,7 +144,7 @@ stage.tick = () => {
 		
 		//context.strokeStyle = star.colour
 		
-		star.direction += 0.000110 * star.age
+		star.direction += 0.000110 * star.age * star.speed/3
 		//star.direction += 0.001
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
@@ -167,12 +170,12 @@ stage.tick = () => {
 		const x = nx-width/2
 		const y = ny-height/2
 
-		const rotation = star.direction
+		const rotation = star.direction/* + star.speed/2*/
 
-		const distanceVector = [x + canvas.width/2, y + canvas.height/2]
+		/*const distanceVector = [x + canvas.width/2, y + canvas.height/2]
 		const distanceMagnitude = Math.hypot(...distanceVector)
 		const blur = distanceMagnitude * 0.00002 * width
-		context.filter = `blur(${blur}px)`
+		context.filter = `blur(${blur}px)`*/
 
 		context.translate(nx, ny)
 		context.rotate(rotation + ROTATION_OFFSET)
@@ -195,7 +198,7 @@ stage.tick = () => {
 			stars.delete(star)
 		}
 
-		if (star.speed < 0.5) {
+		if (star.speed < 0.35) {
 			star.speedMod = 1.015
 		}
 
