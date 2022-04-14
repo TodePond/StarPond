@@ -26,10 +26,12 @@ const srcs = [
 	//`images/todetode/tode.png`,
 	//`images/todetode/dobad.png`,
 	//`images/todetode/woodwood.png`,
-	`images/todetode/wood.png`,
 	//`images/todetode/airsentence.png`,
-	`images/todetode/air.png`,
+	`images/todetode/wood.png`,
+	/*`images/todetode/air.png`,
 	`images/todetode/rock.png`,
+	`images/todetode/sand.png`,
+	`images/todetode/water.png`,*/
 ]
 
 const imgs = []
@@ -77,7 +79,7 @@ const makeStar = () => {
 	//const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	//const direction = Math.random() * 2*Math.PI
 	const direction = dt
-	dt += 0.1
+	dt += Math.PI / 4
 	//const img = imgs[Random.Uint32 % imgs.length]
 	const img = imgs[imgi]
 	imgi++
@@ -89,11 +91,11 @@ const makeStar = () => {
 
 const stars = new Set()
 const MAX_STARS = 5000
-const SPEED = 1.0
+const SPEED = 4.0
 const TRAIL_LENGTH = 10
 
 let r = 0.01
-let dr = 1
+let dr = 0.1
 const spawnStars = () => {
 
 	if (Math.random() < r && stars.size < MAX_STARS) {
@@ -105,7 +107,7 @@ const spawnStars = () => {
 
 const MARGIN_TEST = 10
 
-const KILL_ZONE = 100
+const KILL_ZONE = 300
 const THUMB_SIZE = 0.004
 let ROTATION_OFFSET = Math.PI/2
 
@@ -128,8 +130,8 @@ stage.tick = () => {
 
 	context.clearRect(0, 0, canvas.width, canvas.height)
 	r += (1-r) * 0.002 * dr
-	if (r > 0.6) dr = -1
-	if (r < 0.02) dr = 1
+	//if (r > 0.4) dr = -0.1
+	if (r < 0.02) dr = 0.1
 	//r += 0.0005
 	//if (r > 0.9) r = 0.0
 	//GROWTH += 0.001
@@ -144,7 +146,7 @@ stage.tick = () => {
 		
 		//context.strokeStyle = star.colour
 		
-		star.direction += 0.000110 * star.age * star.speed/3
+		star.direction += 0.00110 / star.speed + 0.01
 		//star.direction += 0.001
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
@@ -198,11 +200,11 @@ stage.tick = () => {
 			stars.delete(star)
 		}
 
-		if (star.speed < 0.35) {
-			star.speedMod = 1.015
+		if (star.speed < 0.4) {
+			star.speedMod = 1.01
 		}
 
-		/*if (star.speed > 1.5) {
+		/*if (star.speed > 2.0) {
 			star.speedMod = 0.995
 		}*/
 	}
