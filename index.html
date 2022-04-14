@@ -28,10 +28,13 @@ const srcs = [
 	//`images/todetode/woodwood.png`,
 	//`images/todetode/airsentence.png`,
 	`images/todetode/wood.png`,
-	/*`images/todetode/air.png`,
+	`images/todetode/air.png`,
 	`images/todetode/rock.png`,
-	`images/todetode/sand.png`,*/
+	`images/todetode/sand.png`,
 	`images/todetode/water.png`,
+	`images/todetode/seed.png`,
+	`images/todetode/reed.png`,
+	`images/todetode/taddy.png`,
 ]
 
 const imgs = []
@@ -79,7 +82,7 @@ const makeStar = () => {
 	//const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	//const direction = Math.random() * 2*Math.PI
 	const direction = dt
-	dt += Math.PI / 4
+	dt += Math.PI / 4 - 0.01
 	//const img = imgs[Random.Uint32 % imgs.length]
 	const img = imgs[imgi]
 	imgi++
@@ -146,7 +149,7 @@ stage.tick = () => {
 		
 		//context.strokeStyle = star.colour
 		
-		star.direction += 0.00110 / star.speed + 0.01
+		star.direction += 0.0015 * star.speed
 		//star.direction += 0.001
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
