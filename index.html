@@ -27,17 +27,81 @@ const srcs = [
 	//`images/todetode/dobad.png`,
 	//`images/todetode/woodwood.png`,
 	//`images/todetode/airsentence.png`,
-	`images/todetode/wood.png`,
+	/*`images/todetode/wood.png`,
 	`images/todetode/air.png`,
 	`images/todetode/rock.png`,
 	`images/todetode/sand.png`,
 	`images/todetode/water.png`,
 	`images/todetode/seed.png`,
 	`images/todetode/reed.png`,
-	`images/todetode/taddy.png`,
+	`images/todetode/taddy.png`,*/
+]
+
+const phrases = [
+	"THIS PHRASE WARMS UP THE CANVAS DONT DELETE IT",
+	"bro",
+	"this isn't cellular automata",
+	/*"it's cellular automaton not cellular automata",
+	"you're not even using the terminology right",
+	"i've already seen this",
+	"is this MNCA?",
+	"this isn't turing complete",
+	"you posted in the wrong section",
+	"you should make NFTs",
+	"you just don't understand",
+	"this would be better if it was deterministic",
+	"this would be better if it was non-deterministic",
+	"more poetry, less demo",
+	"more demo, less poetry",
+	"your code is messy",
+	"what's the point?",
+	"you're not a real tode",
+	"you look and sound like a berd to me",
+	"what will people think?",
+	"you need to think about others",
+	"selfish",
+	"i don't believe you",
+	"you're sick",
+	"we want tode back",
+	"hahahahaha",*/
 ]
 
 const imgs = []
+
+const stampCanvas = document.createElement("canvas")
+const stampContext = stampCanvas.getContext("2d")
+stampCanvas.width = 3840
+stampCanvas.height = 2160
+
+const stampeeCanvas = document.createElement("canvas")
+const stampeeContext = stampeeCanvas.getContext("2d")
+stampeeCanvas.width = 1920
+stampeeCanvas.height = 1080
+
+let discardedPhrase = false
+for (const phrase of phrases) {
+	stampContext.clearRect(0, 0, stampCanvas.width, stampCanvas.height)
+	const measurement = stampContext.measureText(phrase)
+	stampContext.font = "300px Rosario"
+	stampContext.fillStyle = Colour.White
+	stampContext.fillText(phrase, 0, measurement.actualBoundingBoxAscent)
+
+	stampeeContext.clearRect(0, 0, stampeeCanvas.width, stampeeCanvas.height)
+	stampeeCanvas.width = measurement.width
+	stampeeCanvas.height = measurement.actualBoundingBoxAscent + measurement.actualBoundingBoxDescent
+	stampeeContext.drawImage(stampCanvas, 0, 0)
+
+	const img = new Image()
+	img.src = stampeeCanvas.toDataURL()
+
+	if (!discardedPhrase) {
+		discardedPhrase = true
+		continue
+	}
+
+	imgs.push(img)
+}
+
 for (const src of srcs) {
 	const img = document.createElement("img")
 	img.src = src
@@ -78,6 +142,7 @@ const COLOURS = [
 let starId = 0
 let dt = 0
 let imgi = 0
+let phrasei = 0
 const makeStar = () => {
 	//const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	//const direction = Math.random() * 2*Math.PI
@@ -89,6 +154,7 @@ const makeStar = () => {
 	if (imgi >= imgs.length) {
 		imgi = 0
 	}
+
 	return {img, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.99, age: 0, id: starId++, ageSize: 0}
 }
 
