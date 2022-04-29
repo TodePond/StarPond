@@ -39,29 +39,30 @@ const srcs = [
 
 const phrases = [
 	"THIS PHRASE WARMS UP THE CANVAS DONT DELETE IT",
-	"bro",
-	"this isn't cellular automata",
+	"CHEEP",
+	//"bro",
+	//"this isn't cellular automata",
 	/*"it's cellular automaton not cellular automata",
 	"you're not even using the terminology right",
 	"i've already seen this",
-	"is this MNCA?",
-	"this isn't turing complete",
+	//"is this MNCA?",
+	//"this isn't turing complete",
 	"you posted in the wrong section",
-	"you should make NFTs",
+	//"you should make NFTs",
 	"you just don't understand",
-	"this would be better if it was deterministic",
-	"this would be better if it was non-deterministic",
-	"more poetry, less demo",
-	"more demo, less poetry",
+	//"this would be better if it was deterministic",
+	//"this would be better if it was non-deterministic",
+	//"more poetry, less demo",
+	//"more demo, less poetry",
 	"your code is messy",
 	"what's the point?",
 	"you're not a real tode",
 	"you look and sound like a berd to me",
 	"what will people think?",
 	"you need to think about others",
-	"selfish",
-	"i don't believe you",
-	"you're sick",
+	"you're being selfish",
+	//"i don't believe you",
+	//"you're sick",
 	"we want tode back",
 	"hahahahaha",*/
 ]
@@ -109,12 +110,10 @@ for (const src of srcs) {
 }
 
 on.load(() => {
-	
 	document.body.style["margin"] = "0px"
 	document.body.appendChild(canvas)
 	trigger("resize")
 	requestAnimationFrame(stage.tick)
-	
 })
 
 on.resize(() => {
@@ -147,7 +146,11 @@ const makeStar = () => {
 	//const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	//const direction = Math.random() * 2*Math.PI
 	const direction = dt
+	const rotation = -dt * 0.05
+
 	dt += Math.PI / 4 - 0.01
+	//dt += Math.PI / imgs.length * 2 + 0.0001
+	
 	//const img = imgs[Random.Uint32 % imgs.length]
 	const img = imgs[imgi]
 	imgi++
@@ -155,7 +158,7 @@ const makeStar = () => {
 		imgi = 0
 	}
 
-	return {img, x: canvas.width/2, y: canvas.height/2, direction, speed: SPEED, speedMod: 0.99, age: 0, id: starId++, ageSize: 0}
+	return {img, x: canvas.width/2, y: canvas.height/2, direction, rotation, speed: SPEED, speedMod: 0.99, age: 0, id: starId++, ageSize: 0}
 }
 
 const stars = new Set()
@@ -241,7 +244,7 @@ stage.tick = () => {
 		const x = nx-width/2
 		const y = ny-height/2
 
-		const rotation = star.direction/* + star.speed/2*/
+		const rotation = star.direction + star.rotation
 
 		/*const distanceVector = [x + canvas.width/2, y + canvas.height/2]
 		const distanceMagnitude = Math.hypot(...distanceVector)
