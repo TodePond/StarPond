@@ -39,11 +39,22 @@ const srcs = [
 
 const phrases = [
 	"THIS PHRASE WARMS UP THE CANVAS DONT DELETE IT",
-	"CHEEP",
+	//"just",
+	//"basically",
+	//"pointless",
+	//"CHEEP",
+	//"i've seen this before"
 	//"bro",
 	//"this isn't cellular automata",
-	/*"it's cellular automaton not cellular automata",
-	"you're not even using the terminology right",
+	//"it's automaton",
+	//"not automata",
+	//"already seen this",
+	"not even",
+	"not even",
+	/*"not even as good",
+	"not even interesting",
+	"not even new",*/
+	/*"you're not even using the terminology right",
 	"i've already seen this",
 	//"is this MNCA?",
 	//"this isn't turing complete",
@@ -142,14 +153,23 @@ let starId = 0
 let dt = 0
 let imgi = 0
 let phrasei = 0
+
+let r = 0.1
+let dr = 0.1
+let rcost = 1
+
 const makeStar = () => {
 	//const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	//const direction = Math.random() * 2*Math.PI
 	const direction = dt
-	const rotation = -dt * 0.05
+	//const rotation = -dt * 0.025
+	//const rotation = -dt * 0.075
+	const rotation = dt * 0.03
+	//const rotation = -dt * 0.01
+	const speedMod = 0.9995
 
-	dt += Math.PI / 2 - 0.01
-	//dt += Math.PI / imgs.length * 2 + 0.0001
+	dt += (Math.PI / 4 + 0.5)
+	//dt += Math.PI / imgs.length * 0.2 + 0.01
 	
 	//const img = imgs[Random.Uint32 % imgs.length]
 	const img = imgs[imgi]
@@ -158,23 +178,32 @@ const makeStar = () => {
 		imgi = 0
 	}
 
-	return {img, x: canvas.width/2, y: canvas.height/2, direction, rotation, speed: SPEED, speedMod: 0.9875, age: 0, id: starId++, ageSize: 0}
+
+	return {img, x: canvas.width/2, y: canvas.height/2, direction, rotation, speed: SPEED, speedMod, age: 0, id: starId++, ageSize: 0}
 }
 
 const stars = new Set()
-const MAX_STARS = 5000
-const SPEED = 4.0
+const MAX_STARS = 175
+const SPEED = 1.0
 const TRAIL_LENGTH = 10
 
-let r = 0.3
-let dr = 0.1
+let si = 0
 const spawnStars = () => {
 
-	if (Math.random() < r && stars.size < MAX_STARS) {
+	while (si > rcost && stars.size < MAX_STARS) {
 		const star = makeStar()
 		stars.add(star)
-		spawnStars()
+		si -= rcost
 	}
+
+	si += r
+
+
+	/*if (Math.random() < r && stars.size < MAX_STARS) {
+		const star = makeStar()
+		stars.add(star) 
+		spawnStars()
+	}*/
 }
 
 const MARGIN_TEST = 10
@@ -184,7 +213,7 @@ const THUMB_SIZE = 0.004
 let ROTATION_OFFSET = Math.PI/2
 
 let GROWTH = 0.1
-let GROWTH_SIZE = 0.1
+let GROWTH_SIZE = 0.09
 
 let paused = true
 
@@ -219,7 +248,7 @@ stage.tick = () => {
 		
 		//context.strokeStyle = star.colour
 		
-		star.direction += 0.0015 * star.speed
+		star.direction += 0.0010 * star.speed + 0.003
 		//star.direction += 0.001
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
