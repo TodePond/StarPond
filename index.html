@@ -49,8 +49,8 @@ const phrases = [
 	//"it's automaton",
 	//"not automata",
 	//"already seen this",
-	"not even",
-	"not even",
+	//"actually",
+	"this isn't cellular automata",
 	/*"not even as good",
 	"not even interesting",
 	"not even new",*/
@@ -213,7 +213,7 @@ const THUMB_SIZE = 0.004
 let ROTATION_OFFSET = Math.PI/2
 
 let GROWTH = 0.1
-let GROWTH_SIZE = 0.09
+let GROWTH_SIZE = 0.05
 
 let paused = true
 
@@ -248,7 +248,7 @@ stage.tick = () => {
 		
 		//context.strokeStyle = star.colour
 		
-		star.direction += 0.0010 * star.speed + 0.003
+		star.direction += 0.002 * star.speed + 0.002
 		//star.direction += 0.001
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
