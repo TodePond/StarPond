@@ -21,6 +21,13 @@ const plane = document.createElement("img")
 plane.src = `images/todetode/bot.png`*/
 
 const srcs = [
+	//`images/spells/beauty.png`,
+	//`images/spells/world.png`,
+	//`images/spells/thing.png`,
+	//`images/spells/fractal.png`,
+	//`images/spells/lightning.png`,
+	//`images/spells/fire.png`,
+	//`images/cross.png`,
 	//`images/todetode/botdobadtode.png`,
 	//`images/todetode/bot.png`,
 	//`images/todetode/tode.png`,
@@ -39,6 +46,13 @@ const srcs = [
 
 const phrases = [
 	"THIS PHRASE WARMS UP THE CANVAS DONT DELETE IT",
+	//"rainbow",
+	//"you can't just write",
+	//"super in front of it",
+	//"more",
+	//"flame",
+	//"what is a tode",
+	//"you're a berd",
 	//"just",
 	//"basically",
 	//"pointless",
@@ -50,7 +64,7 @@ const phrases = [
 	//"not automata",
 	//"already seen this",
 	//"actually",
-	"this isn't cellular automata",
+	//"this isn't cellular automata",
 	/*"not even as good",
 	"not even interesting",
 	"not even new",*/
@@ -133,7 +147,7 @@ on.resize(() => {
 	canvas.height = innerHeight
 	canvas.style["width"] = innerWidth
 	canvas.style["height"] = innerHeight
-	canvas.style["background-color"] = Colour.Black
+	canvas.style["background-color"] = "#06070a"
 	
 })
 
@@ -154,22 +168,25 @@ let dt = 0
 let imgi = 0
 let phrasei = 0
 
-let r = 0.1
+let r = 0.005
 let dr = 0.1
 let rcost = 1
 
 const makeStar = () => {
-	//const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
+	const colour = COLOURS[Math.floor(Math.random() * COLOURS.length)]
 	//const direction = Math.random() * 2*Math.PI
+	
 	const direction = dt
-	//const rotation = -dt * 0.025
-	//const rotation = -dt * 0.075
-	const rotation = dt * 0.03
-	//const rotation = -dt * 0.01
-	const speedMod = 0.9995
+	//const direction = -dt * (0.004 / r)
 
-	dt += (Math.PI / 4 + 0.5)
-	//dt += Math.PI / imgs.length * 0.2 + 0.01
+	const rotation = -dt * 0.0001
+	//const rotation = -dt * 0.075
+	//const rotation = direction
+	//const rotation = direction + 0.5
+	const speedMod = 0.9975
+
+	dt += (Math.PI*2/3) + 0.01
+	//dt += Math.PI*2 / (1.2) * 1.0 + 0.01//+ 0.004 / r
 	
 	//const img = imgs[Random.Uint32 % imgs.length]
 	const img = imgs[imgi]
@@ -179,11 +196,11 @@ const makeStar = () => {
 	}
 
 
-	return {img, x: canvas.width/2, y: canvas.height/2, direction, rotation, speed: SPEED, speedMod, age: 0, id: starId++, ageSize: 0}
+	return {img, colour, x: canvas.width/2, y: canvas.height/2, direction, rotation, speed: SPEED, speedMod, age: 0, id: starId++, ageSize: 0}
 }
 
 const stars = new Set()
-const MAX_STARS = 175
+const MAX_STARS = 3000
 const SPEED = 1.0
 const TRAIL_LENGTH = 10
 
@@ -196,7 +213,8 @@ const spawnStars = () => {
 		si -= rcost
 	}
 
-	si += r
+	//si += r
+	si += r * Math.random()
 
 
 	/*if (Math.random() < r && stars.size < MAX_STARS) {
@@ -208,18 +226,20 @@ const spawnStars = () => {
 
 const MARGIN_TEST = 10
 
-const KILL_ZONE = 300
+const KILL_ZONE = 200
 const THUMB_SIZE = 0.004
 let ROTATION_OFFSET = Math.PI/2
 
 let GROWTH = 0.1
-let GROWTH_SIZE = 0.05
+let GROWTH_SIZE = 0.075
+
+const MAX_SPEED = 1.0
 
 let paused = true
 
 on.keydown(e => {
 	if (e.key === " ") paused = !paused
-}) 
+})
 
 stage.tick = () => {
 
@@ -230,7 +250,7 @@ stage.tick = () => {
 
 
 	context.clearRect(0, 0, canvas.width, canvas.height)
-	r += (1-r) * 0.002 * dr
+	r += (1-r) * 0.0031 * dr
 	//if (r > 0.4) dr = -0.1
 	//if (r < 0.02) dr = 0.1
 
@@ -246,21 +266,28 @@ stage.tick = () => {
 	
 	for (const star of [...stars.values()].reverse()) {
 		
-		//context.strokeStyle = star.colour
+		context.strokeStyle = star.colour
 		
-		star.direction += 0.002 * star.speed + 0.002
+		if (star.speedMod > 1.0) {
+			//star.direction += 0.0015 * star.speed + 0.001
+			//star.direction += 0.005
+		} else {
+			//star.direction += 0.005
+		}
+		star.direction += 0.0000175 * star.age
+		star.rotation += 0.000003 * star.age
 		//star.direction += 0.001
 
 		const tx = star.x + star.speed*TRAIL_LENGTH * Math.cos(star.direction)
 		const ty = star.y + star.speed*TRAIL_LENGTH * Math.sin(star.direction)
 			  
-		/*if (star.age !== 0) {
+		if (star.age !== 0) {
 			context.lineWidth = star.age
 			context.beginPath()
 			context.moveTo(star.x, star.y)
 			context.lineTo(tx, ty)
 			context.stroke()
-		}*/
+		}
 		
 		const nx = star.x + star.speed * Math.cos(star.direction)
 		const ny = star.y + star.speed * Math.sin(star.direction)
@@ -268,8 +295,8 @@ stage.tick = () => {
 		const ep = (star.id % 30)
 
 		const img = star.img
-		const width = img.width * star.ageSize * THUMB_SIZE
-		const height = img.height * star.ageSize * THUMB_SIZE
+		const width = img && img.width * star.ageSize * THUMB_SIZE
+		const height = img && img.height * star.ageSize * THUMB_SIZE
 
 		const x = nx-width/2
 		const y = ny-height/2
@@ -285,7 +312,7 @@ stage.tick = () => {
 		context.rotate(rotation + ROTATION_OFFSET)
 		context.translate(-nx, -ny)
 
-		context.drawImage(img, x, y, width, height)
+		//context.drawImage(img, x, y, width, height)
 
 		context.translate(nx, ny)
 		context.rotate(-rotation - ROTATION_OFFSET)
@@ -295,6 +322,11 @@ stage.tick = () => {
 		star.y = ny
 
 		star.speed *= star.speedMod
+
+		if (star.speed > MAX_SPEED) {
+			//star.speed = MAX_SPEED
+		}
+
 		star.age += GROWTH
 		star.ageSize += GROWTH_SIZE
 		
@@ -306,9 +338,9 @@ stage.tick = () => {
 			star.speedMod = 1.01
 		}
 
-		/*if (star.speed > 2.0) {
-			star.speedMod = 0.995
-		}*/
+		if (star.speed > 2.0) {
+			//star.speedMod = 0.995
+		}
 	}
 	
 	//context.fillStyle = Colour.Grey
