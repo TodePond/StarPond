@@ -152,6 +152,10 @@ on.resize(() => {
 })
 
 const COLOURS = [
+	Colour.White,
+	Colour.Grey,
+	Colour.Silver,
+	/*
 	Colour.Red,
 	Colour.Green,
 	Colour.Blue,
@@ -161,6 +165,7 @@ const COLOURS = [
 	Colour.Cyan,
 	Colour.Orange,
 	Colour.Purple,
+	*/
 ]
 	
 let starId = 0
@@ -185,7 +190,7 @@ const makeStar = () => {
 	//const rotation = direction + 0.5
 	const speedMod = 0.9975
 
-	dt += (Math.PI*2/3) + 0.01
+	dt += (Math.PI*1/3) + 0.01
 	//dt += Math.PI*2 / (1.2) * 1.0 + 0.01//+ 0.004 / r
 	
 	//const img = imgs[Random.Uint32 % imgs.length]
